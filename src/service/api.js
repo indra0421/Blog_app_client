@@ -3,18 +3,20 @@ import axios from 'axios';
 import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from '../constants/config';
 import { getAccessToken, getRefreshToken, setAccessToken, getType } from '../utils/common-utils';
 
-const API_URL = 'http://localhost:8000';
+// const API_URL = 'http://localhost:8000';
+const API_URL = 'https://blog-app-server-a1k1.onrender.com/';
+
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
-    timeout: 10000, 
+    timeout: 10000,
     headers: {
         "content-type": "application/json"
     }
 });
 
 axiosInstance.interceptors.request.use(
-    function(config) {
+    function (config) {
         if (config.TYPE.params) {
             config.params = config.TYPE.params
         } else if (config.TYPE.query) {
@@ -22,17 +24,17 @@ axiosInstance.interceptors.request.use(
         }
         return config;
     },
-    function(error) {
+    function (error) {
         return Promise.reject(error);
     }
 );
 
 axiosInstance.interceptors.response.use(
-    function(response) {
+    function (response) {
         // Stop global loader here
         return processResponse(response);
     },
-    function(error) {
+    function (error) {
         // Stop global loader here
         return Promise.reject(ProcessError(error));
     }
@@ -69,7 +71,7 @@ const ProcessError = async (error) => {
             // try {
             //     let response = await API.getRefreshToken({ token: getRefreshToken() });
             //     if (response.isSuccess) {
-                    sessionStorage.clear();
+            sessionStorage.clear();
             //         setAccessToken(response.data.accessToken);
 
             //         const requestData = error.toJSON();
@@ -92,7 +94,7 @@ const ProcessError = async (error) => {
                 code: error.response.status
             }
         }
-    } else if (error.request) { 
+    } else if (error.request) {
         // The request was made but no response was received
         console.log("ERROR IN RESPONSE: ", error.toJSON());
         return {
@@ -100,7 +102,7 @@ const ProcessError = async (error) => {
             msg: API_NOTIFICATION_MESSAGES.requestFailure,
             code: ""
         }
-    } else { 
+    } else {
         // Something happened in setting up the request that triggered an Error
         console.log("ERROR IN RESPONSE: ", error.toJSON());
         return {
@@ -124,13 +126,13 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
                 authorization: getAccessToken(),
             },
             TYPE: getType(value, body),
-            onUploadProgress: function(progressEvent) {
+            onUploadProgress: function (progressEvent) {
                 if (showUploadProgress) {
                     let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     showUploadProgress(percentCompleted);
                 }
             },
-            onDownloadProgress: function(progressEvent) {
+            onDownloadProgress: function (progressEvent) {
                 if (showDownloadProgress) {
                     let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     showDownloadProgress(percentCompleted);
