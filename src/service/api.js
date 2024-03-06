@@ -4,7 +4,7 @@ import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from '../constants/config';
 import { getAccessToken, getRefreshToken, setAccessToken, getType } from '../utils/common-utils';
 
 // const API_URL = 'http://localhost:8000';
-const API_URL = 'https://blog-app-server-a1k1.onrender.com/';
+const API_URL = 'https://realtime-chat-app-server-evhs.onrender.com/';
 
 
 const axiosInstance = axios.create({
